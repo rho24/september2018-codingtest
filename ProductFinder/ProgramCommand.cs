@@ -5,6 +5,7 @@ using Oakton;
 using ProductFinder.Csv;
 using ProductFinder.Domain;
 using ProductFinder.Repositories;
+using ProductFinder.Services;
 
 namespace ProductFinder
 {
@@ -28,15 +29,28 @@ namespace ProductFinder
                 x.For<IPartnerContractRepository>().Use<PartnerContractRepository>().Singleton();
             });
 
+            LoadData(input, container);
+
+            var musicFinder = container.GetInstance<IMusicFinder>();
+            
+            
+
+            return true;
+        }
+
+        private static void LoadData(ProgramArguments input, Container container)
+        {
             var csvDataLoader = container.GetInstance<ICsvDataLoader>();
             var musicRepo = container.GetInstance<IMusicContractsRepository>();
+            var partnerRepo = container.GetInstance<IPartnerContractRepository>();
 
-            var musicContracts = csvDataLoader.LoadData(input.MusicContractsFilePath, container.GetInstance<ICsvMapper<MusicContract>>());
+            var musicContracts =
+                csvDataLoader.LoadData(input.MusicContractsFilePath, container.GetInstance<ICsvMapper<MusicContract>>());
             musicRepo.Load(musicContracts);
-            
-            ConsoleWriter.Write(musicRepo.GetAll().First().Title);
-            
-            return true;
+
+            var partnerContracts = csvDataLoader.LoadData(input.PartnerContractsFilePath,
+                container.GetInstance<ICsvMapper<PartnerContract>>());
+            partnerRepo.Load(partnerContracts);
         }
     }
 }

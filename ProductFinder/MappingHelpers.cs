@@ -2,7 +2,7 @@
 using System.Linq;
 using ProductFinder.Domain;
 
-namespace ProductFinder.Csv
+namespace ProductFinder
 {
     public static class MappingHelpers
     {
