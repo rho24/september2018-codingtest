@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Lamar;
 using Oakton;
+using ProductFinder.Csv;
+using ProductFinder.Domain;
+using ProductFinder.Repositories;
 
 namespace ProductFinder
 {
@@ -17,11 +21,17 @@ namespace ProductFinder
                 x.Scan(s =>
                 {
                     s.AssembliesAndExecutablesFromApplicationBaseDirectory();
-                    s.WithDefaultConventions();
+                    s.RegisterConcreteTypesAgainstTheFirstInterface();
                 });
             });
+
+            var csvDataLoader = container.GetInstance<ICsvDataLoader>();
+            var musicRepo = container.GetInstance<IMusicContractsRepository>();
+
+            var musicContracts = csvDataLoader.LoadData(input.MusicContractsFilePath, container.GetInstance<ICsvMapper<MusicContract>>());
+            musicRepo.Load(musicContracts);
             
-            
+            ConsoleWriter.Write(musicRepo.GetAll().First().Title);
             
             return true;
         }
