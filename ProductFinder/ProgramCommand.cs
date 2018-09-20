@@ -12,9 +12,9 @@ using ProductFinder.Services;
 namespace ProductFinder
 {
     [Description("Find available products")]
-    public class ProgramCommand : OaktonAsyncCommand<ProgramArguments>
+    public class ProgramCommand : OaktonCommand<ProgramArguments>
     {
-        public override async Task<bool> Execute(ProgramArguments input)
+        public override bool Execute(ProgramArguments input)
         {
             ConsoleWriter.Write("Search in the format 'partner name 1st Jun 2012'.");
             ConsoleWriter.Write("Enter 'exit' to exit.");
@@ -32,7 +32,15 @@ namespace ProductFinder
                 x.For<IPartnerContractRepository>().Use<PartnerContractRepository>().Singleton();
             });
 
-            LoadData(input, container);
+            try
+            {
+                LoadData(input, container);
+            }
+            catch (Exception e)
+            {
+                ConsoleWriter.Write(ConsoleColor.Red, $"Error loading data: {e.Message}");
+                return false;
+            }
 
             ProcessCommands(container);
 
@@ -46,7 +54,7 @@ namespace ProductFinder
             var inputParser = container.GetInstance<InputParser>();
             var musicFinder = container.GetInstance<IMusicFinder>();
 
-            do
+            while (true)
             {
                 try
                 {
@@ -66,7 +74,7 @@ namespace ProductFinder
                     ConsoleWriter.PrintHorizontalLine();
                     ConsoleWriter.Write("Enter 'exit' to exit.");
                 }
-            } while (true);
+            }
         }
 
         private static void PrintContracts(IEnumerable<MusicContract> contracts)
@@ -85,7 +93,7 @@ namespace ProductFinder
                         $"{c.Artist}|{c.Title}|{usageDisplay}|{c.StartDate:dd MMM yyyy}|{c.EndDate:dd MMM yyyy}");
                 }
             }
-            
+
             ConsoleWriter.PrintHorizontalLine();
             ConsoleWriter.Line();
         }
