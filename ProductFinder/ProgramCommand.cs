@@ -23,6 +23,9 @@ namespace ProductFinder
                     s.AssembliesAndExecutablesFromApplicationBaseDirectory();
                     s.RegisterConcreteTypesAgainstTheFirstInterface();
                 });
+
+                x.For<IMusicContractsRepository>().Use<MusicContractsRepository>().Singleton();
+                x.For<IPartnerContractRepository>().Use<PartnerContractRepository>().Singleton();
             });
 
             var csvDataLoader = container.GetInstance<ICsvDataLoader>();

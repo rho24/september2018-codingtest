@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ProductFinder.Domain;
 
 namespace ProductFinder.Repositories
@@ -7,5 +8,6 @@ namespace ProductFinder.Repositories
     {
         void Load(IEnumerable<MusicContract> contracts);
         IEnumerable<MusicContract> GetAll();
+        IEnumerable<MusicContract> GetForUsageAndDate(Usage usage, DateTime date);
     }
 }

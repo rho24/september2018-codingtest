@@ -7,5 +7,6 @@ namespace ProductFinder.Repositories
     {
         void Load(IEnumerable<PartnerContract> contracts);
         IEnumerable<PartnerContract> GetAll();
+        PartnerContract GetByPartnerName(string partnerName);
     }
 }
