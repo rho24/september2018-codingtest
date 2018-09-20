@@ -29,10 +29,9 @@ namespace ProductFinder.Services
                     Date = MappingHelpers.ParseDate(date)
                 };
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new ArgumentException("Input should be in the format 'partner name 1st Jun 2012'", nameof(input),
-                    e);
+                throw new ArgumentException("Input should be in the format 'partner name 1st Jun 2012'");
             }
         }
     }

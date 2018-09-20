@@ -62,8 +62,7 @@ namespace ProductFinder
                 }
                 catch (Exception e)
                 {
-                    ConsoleWriter.Write(ConsoleColor.Red, "Error:");
-                    ConsoleWriter.Write(ConsoleColor.Red, e.Message);
+                    ConsoleWriter.Write(ConsoleColor.Red, $"Error: {e.Message}");
                     ConsoleWriter.PrintHorizontalLine();
                     ConsoleWriter.Write("Enter 'exit' to exit.");
                 }
@@ -81,13 +80,27 @@ namespace ProductFinder
                 ConsoleWriter.Write("Artist|Title|Usage|StartDate|EndDate");
                 foreach (var c in contracts)
                 {
+                    var usageDisplay = UsageDisplay(c.Usages.First());
                     ConsoleWriter.Write(
-                        $"{c.Artist}|{c.Title}|{c.Usages.First()}|{c.StartDate:dd MMM yyyy}|{c.EndDate:dd MMM yyyy}");
+                        $"{c.Artist}|{c.Title}|{usageDisplay}|{c.StartDate:dd MMM yyyy}|{c.EndDate:dd MMM yyyy}");
                 }
             }
             
             ConsoleWriter.PrintHorizontalLine();
             ConsoleWriter.Line();
+        }
+
+        private static string UsageDisplay(Usage usage)
+        {
+            switch (usage)
+            {
+                case Domain.Usage.DigitalDownload:
+                    return "digital download";
+                case Domain.Usage.Streaming:
+                    return "streaming";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(usage), usage, null);
+            }
         }
 
         private static void LoadData(ProgramArguments input, Container container)
