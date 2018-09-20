@@ -44,7 +44,7 @@ namespace ProductFinder.Csv
 
             var cleanerDate = $"{day} {parts[1]} {parts[2]}";
 
-            return DateTime.ParseExact(cleanerDate, "dd MMM yyyy", CultureInfo.CurrentCulture);
+            return DateTime.Parse(cleanerDate);
         }
     }
 }
