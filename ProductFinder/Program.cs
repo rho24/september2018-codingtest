@@ -1,12 +1,13 @@
 ﻿using System;
+using Oakton;
 
 namespace ProductFinder
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            return CommandExecutor.ExecuteCommand<ProgramCommand>(args);
         }
     }
 }
