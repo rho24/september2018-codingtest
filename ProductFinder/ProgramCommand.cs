@@ -91,6 +91,8 @@ namespace ProductFinder
                     var usageDisplay = UsageDisplay(c.Usages.First());
                     ConsoleWriter.Write(
                         $"{c.Artist}|{c.Title}|{usageDisplay}|{c.StartDate:dd MMM yyyy}|{c.EndDate:dd MMM yyyy}");
+                    
+                    // I haven't formatted the date to the specification, hopefully thats ok!
                 }
             }
 
