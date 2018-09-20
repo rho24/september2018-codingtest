@@ -17,7 +17,10 @@ namespace ProductFinder.Repositories
         public IEnumerable<MusicContract> GetAll()
         {
             // Return array so internal list cannot be modified, note entities are mutable as its not deep copying.
-            return _musicContracts.ToArray();
+            return _musicContracts
+                .OrderBy(c => c.Artist)
+                .ThenBy(c => c.Title)
+                .ToArray();
         }
 
         public IEnumerable<MusicContract> GetForUsageAndDate(Usage usage, DateTime date)
@@ -25,6 +28,8 @@ namespace ProductFinder.Repositories
             return _musicContracts
                 .Where(c => c.Usages.Contains(usage))
                 .Where(c => c.StartDate <= date && (!c.EndDate.HasValue || c.EndDate >= date))
+                .OrderBy(c => c.Artist)
+                .ThenBy(c => c.Title)
                 .ToArray();
         }
     }

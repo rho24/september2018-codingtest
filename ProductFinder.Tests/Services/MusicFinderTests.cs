@@ -29,7 +29,7 @@ namespace ProductFinder.Tests.Services
         }
 
         [Fact]
-        public void FindContracts_ShouldGetContractsForUsageAndDate()
+        public void FindContracts_ShouldGetContractsForUsageAndDateAndMapUsage()
         {
             A.CallTo(() => _partnerContractRepo.GetByPartnerName("partner"))
                 .Returns(new PartnerContract
@@ -44,7 +44,7 @@ namespace ProductFinder.Tests.Services
                 {
                     Artist = "Bob Dylan",
                     Title = "Blowing in the wind",
-                    Usages = new[] {Usage.Streaming},
+                    Usages = new[] {Usage.Streaming, Usage.DigitalDownload},
                     StartDate = new DateTime(2012, 01, 01),
                     EndDate = new DateTime(2012, 12, 31),
                 },
@@ -55,7 +55,14 @@ namespace ProductFinder.Tests.Services
 
             var result = _sut.FindContracts("partner", new DateTime(2012, 6, 1));
 
-            Assert.Equal(contracts, result);
+            Assert.Collection(result, c =>
+            {
+                Assert.Equal("Bob Dylan", c.Artist);
+                Assert.Equal("Blowing in the wind", c.Title);
+                Assert.Collection(c.Usages, u => Assert.Equal(Usage.Streaming, u));
+                Assert.Equal(new DateTime(2012, 01, 01), c.StartDate);
+                Assert.Equal(new DateTime(2012, 12, 31), c.EndDate);
+            });
         }
     }
 }

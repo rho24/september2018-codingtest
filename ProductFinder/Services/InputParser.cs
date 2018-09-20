@@ -15,7 +15,7 @@ namespace ProductFinder.Services
                 var parts = input.Split(' ');
 
                 if (parts.Length < 4)
-                    throw new ArgumentException("Not enough input aprts");
+                    throw new ArgumentException("Not enough input parts");
 
                 var partnerParts = parts.Take(parts.Length - 3);
                 var partnerName = partnerParts.Join(" ");
